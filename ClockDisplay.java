@@ -12,6 +12,8 @@ public class ClockDisplay
     private NumberDisplay hours;
     // Crea los minutos
     private NumberDisplay minutes;
+    // Cadena de caracteres
+    String currentTime;
 
     /**
      * Constructor del reloj. Inicia con un limite de 24h y de 60 minutos y
@@ -19,9 +21,10 @@ public class ClockDisplay
      */
     public ClockDisplay()
     {
-        // inicializa los valores
+        // inicializa los valores en 0 y los limites en 24h/60min
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        currentTime = (hours.getDisplayValue() + ":" + minutes.getDisplayValue());
     }
     /**
      * Constructor del reloj con parametros para fijar la hora. Inicia con un limite
@@ -34,6 +37,7 @@ public class ClockDisplay
         hours.setValue(iniHours);
         minutes = new NumberDisplay (60);
         minutes.setValue(iniMinutes);
+        currentTime = (hours.getDisplayValue() + ":" + minutes.getDisplayValue());
     }
 
     /**
