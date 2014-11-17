@@ -1,19 +1,20 @@
 
 /**
- * Representa las horas o minutos del reloj
+ * Representa una pantalla con dos caracteres
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
 public class NumberDisplay
 {
-    // Valor de las horas/minutos
+    // Valor almacenado
     public int value;
-    // Limite de las horas/minutos
+    // Limite del valor almacenado
     public int limit;
 
     /**
-     * Crea las horas/minutos. 
+     * Crea el Display especificando un limite y con
+     * un valor 0
      */
     public NumberDisplay(int max)
     {
@@ -24,19 +25,18 @@ public class NumberDisplay
     }
 
     /**
-     * Fijar un momento determinado de tiempo en horas y minutos 
-     * en formato 23h:59min
+     * Fija el valor del atributo valor a uno dado
      */
-    public void setValue(int newTime)
+    public void setValue(int newValue)
     {
         // Añadimos el valor que debe tomar, comprueba si es valido
-        if (newTime <= limit && newTime >=0)
+        if (newValue < limit && newValue >=0)
         {
-            value = newTime;
+            value = newValue;
         }
         else
         {
-            System.out.println("Introduce una cantidad de horas entre 0 y " + limit);
+            System.out.println("Introduce una cantidad entre 0 y " + limit);
         }
     }
 
@@ -47,7 +47,14 @@ public class NumberDisplay
     {
         //Formato de la cadena para que sea siempre dos caracteres
         String displayValue = String.format("%02d", value);
-        //String currentTime = hours.value +":" + minutes.value;
+        // Método alternativo:
+        // String displayValue;
+        // if (value < 10){
+        //  displayValue = "o" + value;
+        // }
+        // else {
+        //  displayValue = "" + value;
+        // }
         return displayValue;
     }
 
@@ -66,7 +73,7 @@ public class NumberDisplay
     public void increment()
     {
        value = value + 1;
-       // Si llega a 60 minutos, suma 1 hora
+       // Si llega al limite, vuelve a 0
        if (value >= limit)
        {
            value = value - limit;
