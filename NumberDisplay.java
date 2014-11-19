@@ -8,9 +8,9 @@
 public class NumberDisplay
 {
     // Valor almacenado
-    public int value;
+    private int value;
     // Limite del valor almacenado
-    public int limit;
+    private int limit;
 
     /**
      * Crea el Display especificando un limite y con
