@@ -34,7 +34,7 @@ public class ClockDisplay
         minutes = new NumberDisplay(60);
         day = new NumberDisplay (31);
         month = new NumberDisplay (13);
-        year = new NumberDisplay (99);
+        year = new NumberDisplay (100);
         updateDisplay();
         whatDay();
     }
@@ -53,7 +53,7 @@ public class ClockDisplay
         updateDisplay();
         day = new NumberDisplay (31);
         month = new NumberDisplay (13);
-        year = new NumberDisplay (99);
+        year = new NumberDisplay (100);
         updateDisplay();
         day.setValue(iniDay);
         month.setValue(iniMonth);
