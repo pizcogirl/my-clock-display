@@ -14,6 +14,14 @@ public class ClockDisplay
     private NumberDisplay minutes;
     // Cadena de caracteres que contiene la hora y minutos
     private String currentTime;
+    // Contiene el dia de la fecha
+    private NumberDisplay day;
+    // Contiene el mes de la fecha
+    private NumberDisplay month;
+    // Contiene el año de la fecha
+    private NumberDisplay year;
+    // Cadena para contener la fecha completa
+    private String todayIs;
 
     /**
      * Constructor del reloj. Inicia con un limite de 24h y de 60 minutos y
@@ -24,14 +32,18 @@ public class ClockDisplay
         // inicializa los valores en 0 y los limites en 24h/60min
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        day = new NumberDisplay (31);
+        month = new NumberDisplay (13);
+        year = new NumberDisplay (99);
         updateDisplay();
+        whatDay();
     }
 
     /**
      * Constructor del reloj con parametros para fijar la hora. Inicia con un limite
-     * de 24h y 60 minutos
+     * de 24h y 60 minutos. Introduce la fecha separa en dia, mese y año
      */
-    public ClockDisplay(int iniHours, int iniMinutes)
+    public ClockDisplay(int iniHours, int iniMinutes, int iniDay, int iniMonth, int iniYear)
     {
         // inicializa los valores, limites fijados y hora y minutos que le demos
         hours = new NumberDisplay(24);
@@ -39,18 +51,30 @@ public class ClockDisplay
         minutes = new NumberDisplay (60);
         minutes.setValue(iniMinutes);
         updateDisplay();
+        day = new NumberDisplay (31);
+        month = new NumberDisplay (13);
+        year = new NumberDisplay (99);
+        updateDisplay();
+        day.setValue(iniDay);
+        month.setValue(iniMonth);
+        year.setValue(iniYear);
+        whatDay();
     }
 
     /**
      * Fijar un momento determinado de tiempo en horas y minutos 
-     * en formato 24h:59min.
+     * en formato 24h:59min. Introduce la fecha separa en dia, mese y año
      */
-    public void setTime(int newHour, int newMinute)
+    public void setTime(int newHour, int newMinute, int newDay, int newMonth, int newYear)
     {
         // Introduce la hora y los minutos
         hours.setValue (newHour);
         minutes.setValue (newMinute);
         updateDisplay();
+        day.setValue(newDay);
+        month.setValue(newMonth);
+        year.setValue(newYear);
+        whatDay();
     }
 
     /**
@@ -64,8 +88,26 @@ public class ClockDisplay
         {
             // Si se resetean los minutos, suma una hora
             hours.increment();
+            if (hours.getValue() == 00)
+            {
+                day.increment();
+                
+                if (day.getValue() == 00)
+                {
+                    day.increment();
+                    month.increment();
+                    
+                    if (month.getValue() == 00)
+                    {
+                        month.increment();
+                        year.increment();
+                    }
+                    
+                }
+            }
         }
         updateDisplay();
+        whatDay();
     }
 
     /**
@@ -76,29 +118,50 @@ public class ClockDisplay
     {
         // Muestra el valor de las horas y minutos
         // currentTime = (hours.getDisplayValue() + ":" + minutes.getDisplayValue());
-        return currentTime;
+        return currentTime + " " + todayIs;
     }
 
     /**
      * Actualiza el atributo displayString
      */
+    // El metodo updateDisplay muestra las horas en formato AM/PM, conversión mediante IF
     private void updateDisplay()
     {
-        if (hours.getValue() > 11)
+        String pm = "PM";
+        String am = "AM";
+        int tempHour = hours.getValue();
+        if (tempHour == 00)
         {
-            int changeHours;
-            changeHours = hours.getValue() - 12;
-            if (changeHours < 10)
+            currentTime = "12" + ":" + minutes.getDisplayValue() + am;
+        }
+        else
+        {
+            if (tempHour > 12)
             {
-                currentTime = "0" + changeHours + ":" + minutes.getDisplayValue() + "PM";
+                int changeHours;
+                changeHours = tempHour - 12;
+                currentTime = String.format("%02d", changeHours) + ":" + minutes.getDisplayValue() + pm;
             }
             else
             {
-                currentTime = changeHours + ":" + minutes.getDisplayValue() + "PM";
+                if (tempHour == 12)
+                {
+                    currentTime = "12" + ":" + minutes.getDisplayValue() + pm;
+                }
+                else
+                // Si la hora es menor que 12;
+                {
+                    currentTime = (String.format("%02d", tempHour) + ":" + minutes.getDisplayValue() + am);
+                }
+
             }
         }
-        else 
-
-            currentTime = (hours.getDisplayValue() + ":" + minutes.getDisplayValue() + "AM");
+    }
+    /**
+     * Metodo para actualizar la fecha
+     */
+    private void whatDay()
+    {
+       todayIs = day.getDisplayValue() + "/" + month.getDisplayValue() + "/" + year.getDisplayValue();
     }
 }
